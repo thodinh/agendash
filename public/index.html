@@ -45,12 +45,12 @@
             <table class="table">
               <thead>
                 <tr>
+                  <th>Job info</th>
                   <th>Status</th>
-                  <th>Name</th>
-                  <th>Last run started</th>
+                  <!--<th>Last run started</th>
                   <th>Next run starts</th>
                   <th>Last finished</th>
-                  <th>Locked</th>
+                  <th>Locked</th>-->
                 </tr>
               </thead>
               <tbody id="job-list"></tbody>
@@ -119,6 +119,28 @@
 
     <script type="text/template" id="job-item-template">
       <td>
+        <b><%- (job.data && job.data.socialType) || job.name %></b><br/>
+        <%- 'id: ' + job.data.socialobeUserId %><br/>
+        <%- job.data.socialType + '-id: ' + job.data.socialUserId %><br/>
+        <b>Last run at: </b><% if (job.lastRunAt) { %><time datetime="<%- moment(job.lastRunAt).toISOString() %>"><%- moment(job.lastRunAt).fromNow() %></time><% } %><br/>
+        <b>Next run at: </b><% if (job.nextRunAt) { %><time datetime="<%- moment(job.nextRunAt).toISOString() %>"><%- moment(job.nextRunAt).fromNow() %></time><% } %><br/>
+        <b>Last finished at: </b><% if (job.lastFinishedAt) { %><time datetime="<%- moment(job.lastFinishedAt).toISOString() %>"><%- moment(job.lastFinishedAt).fromNow() %></time><% } %><br/>
+        <% if (job.lockedAt) { %><b>Locked at: </b><time datetime="<%- moment(job.lockedAt).toISOString() %>"><%- moment(job.lockedAt).fromNow() %></time><% } %>
+      </td>
+      <td>
+        <div style="margin-bottom:10px;">
+        <% if (repeating) { %><span class="label label-info"><i class="glyphicon glyphicon-repeat"></i> <%- job.repeatInterval %></span><% } %>
+        <% if (scheduled) { %><span class="label label-info">Scheduled</span><% } %>
+        <% if (queued) { %><span class="label label-primary">Queued</span><% } %>
+        <% if (running) { %><span class="label label-warning">Running</span><% } %>
+        <% if (completed) { %><span class="label label-success">Completed</span><% } %>
+        <% if (failed) { %>
+          <span class="label label-danger">Failed</span>
+        <% } %>
+        </div>
+        <% if (failed) { %><div class="alert alert-danger"><%- JSON.stringify(job.failReason || '', null, 2) %></div><% } %>
+      </td>
+      <!--<td>
         <% if (repeating) { %><span class="label label-info"><i class="glyphicon glyphicon-repeat"></i> <%- job.repeatInterval %></span><% } %>
         <% if (scheduled) { %><span class="label label-info">Scheduled</span><% } %>
         <% if (queued) { %><span class="label label-primary">Queued</span><% } %>
@@ -132,7 +154,7 @@
       <td><% if (job.lastRunAt) { %><time datetime="<%- moment(job.lastRunAt).toISOString() %>"><%- moment(job.lastRunAt).fromNow() %></time><% } %></td>
       <td><% if (job.nextRunAt) { %><time datetime="<%- moment(job.nextRunAt).toISOString() %>"><%- moment(job.nextRunAt).fromNow() %></time><% } %></td>
       <td><% if (job.lastFinishedAt) { %><time datetime="<%- moment(job.lastFinishedAt).toISOString() %>"><%- moment(job.lastFinishedAt).fromNow() %></time><% } %></td>
-      <td><% if (job.lockedAt) { %><time datetime="<%- moment(job.lockedAt).toISOString() %>"><%- moment(job.lockedAt).fromNow() %></time><% } %></td>
+      <td><% if (job.lockedAt) { %><time datetime="<%- moment(job.lockedAt).toISOString() %>"><%- moment(job.lockedAt).fromNow() %></time><% } %></td>-->
     </script>
 
     <script type="text/template" id="job-item-details-template">
